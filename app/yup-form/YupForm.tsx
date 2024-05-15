@@ -76,19 +76,71 @@ const YupForm = () => {
   return (
     <div className="w-full max-w-[800px] m-auto py-20">
       <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4 flex flex-col"
+        >
+          <div className="flex gap-4">
+            <FormField
+              name="first_name"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>First name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="First name" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Validate: required, max-length: 30, includes [a-zA-Z\s]
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              name="last_name"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Last name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Last name" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Validate: required, max-length: 30, includes [a-zA-Z\s]
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
           <FormField
-            name="first_name"
+            name="email"
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>First name</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="First name" {...field} />
+                    <Input placeholder="Email" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Validate: required, max-length: 30, includes [a-zA-Z\s]
-                  </FormDescription>
+                  <FormDescription>Validate: ...</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            name="password"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Password" {...field} />
+                  </FormControl>
+                  <FormDescription>Validate: Password...</FormDescription>
                   <FormMessage />
                 </FormItem>
               );
