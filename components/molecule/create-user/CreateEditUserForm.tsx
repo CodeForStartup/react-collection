@@ -111,7 +111,7 @@ const CreateEditUserForm = () => {
   };
 
   return (
-    <div className="w-full max-w-[800px] m-auto py-10">
+    <div className="w-full max-w-[800px] m-auto mt-10 bg-slate-50 p-8 rounded-lg border">
       <Form {...form}>
         <form
           onSubmit={handleSubmit(onSubmit)}
