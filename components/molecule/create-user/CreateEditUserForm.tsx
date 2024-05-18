@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 
 import {
   Form,
@@ -110,6 +110,8 @@ const CreateEditUserForm = () => {
     //
   };
 
+  console.log(form.getValues());
+
   return (
     <div className="w-full max-w-[800px] m-auto mt-10 bg-slate-50 p-8 rounded-lg border">
       <Form {...form}>
@@ -210,6 +212,15 @@ const CreateEditUserForm = () => {
               type="reset"
               variant="outline"
               className="w-full max-w-[200px]"
+              onClick={() =>
+                form.reset({
+                  first_name: "",
+                  last_name: "",
+                  email: "",
+                  password: "",
+                  password_confirmation: "",
+                })
+              }
             >
               Reset
             </Button>
