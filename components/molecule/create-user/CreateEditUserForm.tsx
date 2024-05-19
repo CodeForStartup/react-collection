@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button } from "@/components/ui/button";
+import UserDetailInfo, { GenderEnum } from "./UserDetailInfo";
 
 enum Countries {
   US = "United States",
@@ -46,6 +47,7 @@ type UserForm = {
   email: string;
   password: string;
   password_confirmation: string;
+  gender: GenderEnum;
   // profileImage?: File;
   // bio?: string;
   // country: Countries;
@@ -94,118 +96,38 @@ const createUserResolver = yupResolver<UserForm>(
       .string()
       .required("Password confirmation is required")
       .oneOf([yup.ref("password")], "Passwords must match"),
+    gender: yup
+      .string()
+      .oneOf(Object.values(GenderEnum))
+      .required("Gender is required"),
   })
 );
 
 const CreateEditUserForm = () => {
   const form = useForm<UserForm>({
     mode: "all",
-    defaultValues: {},
+    defaultValues: {
+      gender: undefined,
+    },
     resolver: createUserResolver,
   });
 
   const { handleSubmit } = form;
 
-  const onSubmit = (data) => {
+  const onSubmit = () => {
     //
   };
 
   console.log(form.getValues());
 
   return (
-    <div className="w-full max-w-[800px] m-auto mt-10 bg-slate-50 p-8 rounded-lg border">
+    <div className="w-full max-w-[800px] m-auto mt-10">
       <Form {...form}>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-4 flex flex-col"
         >
-          <div className="flex gap-4 w-full">
-            <FormField
-              name="first_name"
-              render={({ field }) => {
-                return (
-                  <FormItem className="w-full">
-                    <FormLabel>First name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="First name" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Validate: required, max-length: 50, includes [a-zA-Z\s]
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-            <FormField
-              name="last_name"
-              render={({ field }) => {
-                return (
-                  <FormItem className="w-full">
-                    <FormLabel>Last name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Last name" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Validate: required, max-length: 50, includes [a-zA-Z\s]
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-          </div>
-          <FormField
-            name="email"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Email" {...field} />
-                  </FormControl>
-                  <FormDescription>Validate: ...</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            name="password"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Password" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Validate: Password should include at least one lowercase
-                    letter, one uppercase letter, one number, and one special
-                    character
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            name="password_confirmation"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Password confirmation</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Password confirmation" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Validate: Confirmation password should match password
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
+          <UserDetailInfo />
           <div className="flex gap-4 justify-center">
             <Button
               value="reset"
