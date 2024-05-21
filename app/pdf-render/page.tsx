@@ -1,7 +1,7 @@
 import CreateEditUserForm from "@/components/molecule/create-user/CreateEditUserForm";
 import React from "react";
 
-const Page = () => {
+const PdfRender = () => {
   return (
     <div className="container p-20">
       <div className="m-auto">
@@ -13,4 +13,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default PdfRender;
