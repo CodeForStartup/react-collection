@@ -17,6 +17,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button } from "@/components/ui/button";
 import UserDetailInfo, { GenderEnum } from "./UserDetailInfo";
+import exp from "constants";
 
 enum Countries {
   US = "United States",
@@ -52,11 +53,11 @@ type UserForm = {
   // bio?: string;
   // country: Countries;
   // overtime?: boolean;
-  // experiences: Array<{
-  //   title: string;
-  //   company: string;
-  //   location?: string;
-  // }>;
+  experiences: {
+    title: string;
+    company: string;
+    location?: string;
+  }[];
   // skills: Array<string>;
   // projects: Array<{
   //   title: string;
@@ -100,6 +101,13 @@ const createUserResolver = yupResolver<UserForm>(
       .string()
       .oneOf(Object.values(GenderEnum))
       .required("Gender is required"),
+    experiences: yup.array().of(
+      yup.object().shape({
+        title: yup.string().required("Title is required"),
+        company: yup.string().required("Company is required"),
+        location: yup.string().nullable(),
+      })
+    ),
   })
 );
 
