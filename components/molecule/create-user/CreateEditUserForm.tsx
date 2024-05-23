@@ -18,6 +18,7 @@ import * as yup from "yup";
 import { Button } from "@/components/ui/button";
 import UserDetailInfo, { GenderEnum } from "./UserDetailInfo";
 import exp from "constants";
+import Experiences from "./Experiences";
 
 enum Countries {
   US = "United States",
@@ -53,11 +54,11 @@ type UserForm = {
   // bio?: string;
   // country: Countries;
   // overtime?: boolean;
-  experiences: {
+  experiences: Array<{
     title: string;
     company: string;
     location?: string;
-  }[];
+  }>;
   // skills: Array<string>;
   // projects: Array<{
   //   title: string;
@@ -101,13 +102,18 @@ const createUserResolver = yupResolver<UserForm>(
       .string()
       .oneOf(Object.values(GenderEnum))
       .required("Gender is required"),
-    experiences: yup.array().of(
-      yup.object().shape({
-        title: yup.string().required("Title is required"),
-        company: yup.string().required("Company is required"),
-        location: yup.string().nullable(),
-      })
-    ),
+    experiences: yup
+      .array()
+      .of(
+        yup.object().shape({
+          title: yup.string().required("Title is required"),
+          company: yup.string().required("Company is required"),
+          location: yup.string().optional(),
+        })
+      )
+      .min(1, "") as yup.Schema<
+      { title: string; company: string; location?: string }[]
+    >,
   })
 );
 
@@ -136,6 +142,8 @@ const CreateEditUserForm = () => {
           className="space-y-4 flex flex-col"
         >
           <UserDetailInfo />
+
+          <Experiences />
           <div className="flex gap-4 justify-center">
             <Button
               value="reset"
