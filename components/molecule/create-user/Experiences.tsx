@@ -26,7 +26,6 @@ const experiences: Experience[] = [
 const Experiences: React.FC = () => {
   return (
     <div>
-      <h2>Experiences</h2>
       {experiences.map((experience) => (
         <div key={experience.id}>
           <h3>{experience.title}</h3>
