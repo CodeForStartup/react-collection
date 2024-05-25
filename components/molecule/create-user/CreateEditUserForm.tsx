@@ -16,56 +16,9 @@ import { Input } from "@/components/ui/input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button } from "@/components/ui/button";
-import UserDetailInfo, { GenderEnum } from "./UserDetailInfo";
-import exp from "constants";
+import UserDetailInfo from "./UserDetailInfo";
 import Experiences from "./Experiences";
-
-enum Countries {
-  US = "United States",
-  CA = "Canada",
-  UK = "United Kingdom",
-  AU = "Australia",
-  DE = "Germany",
-  FR = "France",
-  JP = "Japan",
-  CN = "China",
-  KR = "South Korea",
-  IN = "India",
-  BR = "Brazil",
-  MX = "Mexico",
-  RU = "Russia",
-  ZA = "South Africa",
-  NG = "Nigeria",
-  EG = "Egypt",
-  KE = "Kenya",
-  SA = "Saudi Arabia",
-  AE = "United Arab",
-  VI = "Vietnam",
-}
-
-type UserForm = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-  gender: GenderEnum;
-  // profileImage?: File;
-  // bio?: string;
-  // country: Countries;
-  // overtime?: boolean;
-  experiences: Array<{
-    title: string;
-    company: string;
-    location?: string;
-  }>;
-  // skills: Array<string>;
-  // projects: Array<{
-  //   title: string;
-  //   description: string;
-  //   url?: string;
-  // }>;
-};
+import { GenderEnum, UserForm } from "./type";
 
 const createUserResolver = yupResolver<UserForm>(
   yup.object().shape({
@@ -106,13 +59,15 @@ const createUserResolver = yupResolver<UserForm>(
       .array()
       .of(
         yup.object().shape({
-          title: yup.string().required("Title is required"),
+          position: yup.string().required("Position is required"),
           company: yup.string().required("Company is required"),
-          location: yup.string().optional(),
+          from: yup.date(),
+          to: yup.date(),
+          is_working: yup.boolean(),
         })
       )
       .min(1, "") as yup.Schema<
-      { title: string; company: string; location?: string }[]
+      { position: string; company: string; from: Date; to: Date }[]
     >,
   })
 );
@@ -122,6 +77,15 @@ const CreateEditUserForm = () => {
     mode: "all",
     defaultValues: {
       gender: undefined,
+      experiences: [
+        {
+          position: "",
+          company: "",
+          from: undefined,
+          to: undefined,
+          is_working: false,
+        },
+      ],
     },
     resolver: createUserResolver,
   });
@@ -132,18 +96,16 @@ const CreateEditUserForm = () => {
     //
   };
 
-  console.log(form.getValues());
-
   return (
     <div className="w-full max-w-[800px] m-auto mt-10">
       <Form {...form}>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-4 flex flex-col"
+          className="space-y-12 flex flex-col"
         >
           <UserDetailInfo />
-
           <Experiences />
+
           <div className="flex gap-4 justify-center">
             <Button
               value="reset"
@@ -157,6 +119,15 @@ const CreateEditUserForm = () => {
                   email: "",
                   password: "",
                   password_confirmation: "",
+                  experiences: [
+                    {
+                      position: "",
+                      company: "",
+                      from: undefined,
+                      to: undefined,
+                      is_working: false,
+                    },
+                  ],
                 })
               }
             >
