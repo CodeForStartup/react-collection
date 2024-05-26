@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   UseFormReturn,
   useFieldArray,
@@ -16,19 +16,127 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
+import { CalendarDays, Plus, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@radix-ui/react-label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
 
 type ExperiencesProps = {};
 
+const ExperienceFromToPicker = ({ index }: { index: number }) => {
+  const { watch, resetField } = useFormContext();
+
+  const experience = watch(`experiences.${index}`);
+
+  useEffect(() => {
+    if (experience?.is_working) {
+      resetField(`experiences.${index}.to`);
+    }
+  }, [experience?.is_working, index, resetField]);
+
+  return (
+    <div className="flex">
+      <FormField
+        name={`experiences.${index}.from`}
+        render={({ field }) => (
+          <FormItem className="flex flex-col">
+            <FormLabel>Start date</FormLabel>
+            <Popover>
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[240px] pl-3 text-left font-normal",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    {field.value ? (
+                      format(field.value, "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                    <CalendarDays className="ml-auto h-4 w-4 opacity-50" />
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={field.value}
+                  onSelect={field.onChange}
+                  disabled={(date) =>
+                    date > new Date() || date < new Date("1900-01-01")
+                  }
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <FormDescription>
+              Validate: start-date must be before end-date
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        name={`experiences.${index}.to`}
+        render={({ field }) => (
+          <FormItem className="flex flex-col">
+            <FormLabel>End date</FormLabel>
+            <Popover>
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    disabled={experience?.is_working}
+                    variant={"outline"}
+                    className={cn(
+                      "w-[240px] pl-3 text-left font-normal",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    {field.value ? (
+                      format(field.value, "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                    <CalendarDays className="ml-auto h-4 w-4 opacity-50" />
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={field.value}
+                  onSelect={field.onChange}
+                  disabled={(date) =>
+                    date > new Date() || date < new Date("1900-01-01")
+                  }
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <FormDescription>
+              Validate: end-date must be before end-date/ If user is still
+              working, disable this field
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
+  );
+};
+
 const Experiences: React.FC<ExperiencesProps> = ({}) => {
-  const {
-    control,
-    register,
-    getValues,
-    formState: { errors },
-  } = useFormContext();
+  const { control, register } = useFormContext();
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -119,6 +227,8 @@ const Experiences: React.FC<ExperiencesProps> = ({}) => {
                         <div className="flex items-center gap-2">
                           <Switch
                             {...field}
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
                             id={`experiences.${index}.is_working`}
                           />
                           <Label htmlFor={`experiences.${index}.is_working`}>
@@ -126,13 +236,13 @@ const Experiences: React.FC<ExperiencesProps> = ({}) => {
                           </Label>
                         </div>
                       </FormControl>
-                      {/* <FormDescription>Validate:</FormDescription> */}
                       <FormMessage />
                     </FormItem>
                   );
                 }}
               />
-              <div></div>
+
+              <ExperienceFromToPicker index={index} />
             </div>
           </div>
         </div>
