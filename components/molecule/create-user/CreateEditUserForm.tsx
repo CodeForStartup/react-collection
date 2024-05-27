@@ -59,23 +59,26 @@ const createUserResolver = yupResolver<UserForm>(
       experiences: yup
         .array()
         .of(
-          yup.object().shape({
-            position: yup.string().required("Position is required"),
-            company: yup.string().required("Company is required"),
-            from: yup.date().required("From date is required"),
-            to: yup.date().when("is_working", (is_working, schema) => {
-              return is_working
-                ? schema
-                : schema.required("To date is required");
-            }),
-            is_working: yup.boolean(),
-          })
+          yup.object().shape(
+            {
+              position: yup.string().required("Position is required"),
+              company: yup.string().required("Company is required"),
+              from: yup.date().required("Start date is required"),
+              is_working: yup.boolean(),
+              to: yup.date().when("is_working", ([is_working], schema) => {
+                return Boolean(is_working)
+                  ? schema
+                  : schema.required("End date is required");
+              }),
+            },
+            [["to", "is_working"]] as const
+          )
         )
         .min(1, "") as yup.Schema<
         { position: string; company: string; from: Date; to: Date }[]
       >,
     },
-    [["password", "password_confirmation"], [""]] as const
+    [["password", "password_confirmation"]] as const
   )
 );
 
