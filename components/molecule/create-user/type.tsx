@@ -27,6 +27,17 @@ export enum Countries {
   VI = "Vietnam",
 }
 
+export enum Skill {
+  Frontend = "Frontend",
+  Backend = "Backend",
+  Fullstack = "Fullstack",
+  DevOps = "DevOps",
+  DataScience = "Data Science",
+  MachineLearning = "Machine Learning",
+  Mobile = "Mobile",
+  Game = "Game",
+}
+
 export type UserForm = {
   first_name: string;
   last_name: string;
@@ -34,10 +45,11 @@ export type UserForm = {
   password: string;
   password_confirmation: string;
   gender: GenderEnum;
-  // profileImage?: File;
-  // bio?: string;
-  // country: Countries;
-  // overtime?: boolean;
+  url?: string;
+  phone?: string;
+  skills: Array<Skill>;
+  working_type: "full_time" | "part_time" | "freelancer";
+
   experiences: Array<{
     position: string;
     company: string;
@@ -45,10 +57,4 @@ export type UserForm = {
     to?: Date;
     is_working?: boolean;
   }>;
-  // skills: Array<string>;
-  // projects: Array<{
-  //   title: string;
-  //   description: string;
-  //   url?: string;
-  // }>;
 };
