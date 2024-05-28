@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { GenderEnum, UserForm } from "./type";
+import { GenderEnum, Skill, UserForm } from "./type";
+import { url } from "inspector";
 
 export const createUserResolver = yupResolver<UserForm>(
   yup.object().shape(
@@ -38,6 +39,25 @@ export const createUserResolver = yupResolver<UserForm>(
         .string()
         .oneOf(Object.values(GenderEnum))
         .required("Gender is required"),
+
+      url: yup.string().url("Invalid URL"),
+      // skills: yup
+      //   .array()
+      //   .of(
+      //     yup.string().oneOf(Object.values(Skill)).required("Skill is required")
+      //   )
+      //   .min(1, "At least one skill is required"),
+      // working_types: yup
+      //   .array()
+      //   .of(
+      //     yup
+      //       .string()
+      //       .oneOf("full_time", "part_time", "freelancer")
+      //       .required("Working type is required")
+      //   )
+      //   .min(1, "At least one working type is required"),
+      phone: yup.string().required("Phone is required"),
+
       experiences: yup
         .array()
         .of(
@@ -47,11 +67,16 @@ export const createUserResolver = yupResolver<UserForm>(
               company: yup.string().required("Company is required"),
               from: yup.date().required("Start date is required"),
               is_working: yup.boolean(),
-              to: yup.date().when("is_working", ([is_working], schema) => {
-                return Boolean(is_working)
-                  ? schema
-                  : schema.required("End date is required");
-              }),
+              to: yup
+                .date()
+                .required("End date is required")
+                .nullable()
+                .when(["is_working", "from"], ([is_working, from], schema) => {
+                  return Boolean(is_working)
+                    ? schema
+                    : schema.required("End date is required");
+                })
+                .transform((curr, orig) => (orig === "" ? null : curr)),
             },
             [["to", "is_working"]] as const
           )

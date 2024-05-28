@@ -31,7 +31,7 @@ import { format } from "date-fns";
 type ExperiencesProps = {};
 
 const ExperienceFromToPicker = ({ index }: { index: number }) => {
-  const { watch, resetField } = useFormContext();
+  const { watch, resetField, getValues } = useFormContext();
 
   const experience = watch(`experiences.${index}`);
 
@@ -113,13 +113,13 @@ const ExperienceFromToPicker = ({ index }: { index: number }) => {
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
+                  initialFocus
                   mode="single"
                   selected={field.value}
-                  onSelect={field.onChange}
+                  onSelect={(newValue) => field.onChange(newValue || "")}
                   disabled={(date) =>
                     date > new Date() || date < new Date("1900-01-01")
                   }
-                  initialFocus
                 />
               </PopoverContent>
             </Popover>

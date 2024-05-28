@@ -19,7 +19,7 @@ const CreateEditUserForm = () => {
         {
           position: "",
           company: "",
-          from: undefined,
+          from: new Date(),
           to: undefined,
           is_working: false,
         },

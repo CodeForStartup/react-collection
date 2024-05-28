@@ -47,8 +47,8 @@ export type UserForm = {
   gender: GenderEnum;
   url?: string;
   phone?: string;
-  skills: Array<Skill>;
-  working_type: "full_time" | "part_time" | "freelancer";
+  // skills?: Array<`${Skill}`>;
+  // working_types?: "full_time" | "part_time" | "freelancer";
 
   experiences: Array<{
     position: string;
