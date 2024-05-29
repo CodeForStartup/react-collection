@@ -15,7 +15,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import React from "react";
-import { GenderEnum } from "./type";
+import { GenderEnum, Skill, Skills, WorkingType } from "./type";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const UserDetailInfo: React.FC = () => {
   return (
@@ -145,6 +147,89 @@ const UserDetailInfo: React.FC = () => {
               </FormItem>
             );
           }}
+        />
+
+        <FormField
+          name="working_types"
+          render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel>Working type</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value={WorkingType.Freelancer} />
+                    </FormControl>
+                    <FormLabel className="font-normal">Freelancer</FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value={WorkingType.FullTime} />
+                    </FormControl>
+                    <FormLabel className="font-normal">Full time</FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value={WorkingType.PartTime} />
+                    </FormControl>
+                    <FormLabel className="font-normal">Part time</FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="skills"
+          render={() => (
+            <FormItem>
+              <div className="mb-4">
+                <FormLabel className="text-base">Sidebar</FormLabel>
+                <FormDescription>
+                  Select the items you want to display in the sidebar.
+                </FormDescription>
+              </div>
+              {Skills.map((skill) => (
+                <FormField
+                  key={skill.id}
+                  name="skills"
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={skill.id}
+                        className="flex flex-row items-start space-x-3 space-y-0"
+                      >
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(skill.id)}
+                            onCheckedChange={(checked) => {
+                              return checked
+                                ? field.onChange([...field.value, skill.id])
+                                : field.onChange(
+                                    field.value?.filter(
+                                      (value: string) => value !== skill.id
+                                    )
+                                  );
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="text-sm font-normal">
+                          {skill.name}
+                        </FormLabel>
+                      </FormItem>
+                    );
+                  }}
+                />
+              ))}
+              <FormMessage />
+            </FormItem>
+          )}
         />
       </div>
     </div>

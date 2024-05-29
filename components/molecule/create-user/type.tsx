@@ -38,6 +38,41 @@ export enum Skill {
   Game = "Game",
 }
 
+export const Skills = [
+  {
+    id: Skill.Frontend,
+    name: "Frontend",
+  },
+  {
+    id: Skill.Backend,
+    name: "Backend",
+  },
+  {
+    id: Skill.Fullstack,
+    name: "Fullstack",
+  },
+  {
+    id: Skill.DevOps,
+    name: "DevOps",
+  },
+  {
+    id: Skill.DataScience,
+    name: "Data Science",
+  },
+  {
+    id: Skill.MachineLearning,
+    name: "Machine Learning",
+  },
+  {
+    id: Skill.Mobile,
+    name: "Mobile",
+  },
+  {
+    id: Skill.Game,
+    name: "Game",
+  },
+];
+
 export enum WorkingType {
   FullTime = "full_time",
   PartTime = "part_time",

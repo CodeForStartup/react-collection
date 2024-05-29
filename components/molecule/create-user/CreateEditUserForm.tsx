@@ -15,11 +15,12 @@ const CreateEditUserForm = () => {
     mode: "all",
     defaultValues: {
       gender: undefined,
+      skills: [],
       experiences: [
         {
           position: "",
           company: "",
-          from: new Date("2024-05-09"),
+          from: undefined,
           to: undefined,
           is_working: false,
         },
@@ -61,6 +62,7 @@ const CreateEditUserForm = () => {
                   password: "",
                   password_confirmation: "",
                   gender: "",
+                  working_types: "",
                   experiences: [
                     {
                       position: "",
