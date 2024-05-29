@@ -118,7 +118,11 @@ const UserDetailInfo: React.FC = () => {
               <FormItem>
                 <FormLabel>Gender</FormLabel>
                 <FormControl>
-                  <Select {...field}>
+                  <Select
+                    {...field}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <SelectTrigger className="w-[280px]">
                       <SelectValue placeholder="Select gender" />
                     </SelectTrigger>

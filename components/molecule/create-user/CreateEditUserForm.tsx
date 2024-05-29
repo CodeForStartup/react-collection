@@ -19,7 +19,7 @@ const CreateEditUserForm = () => {
         {
           position: "",
           company: "",
-          from: undefined,
+          from: new Date("2024-05-09"),
           to: undefined,
           is_working: false,
         },
@@ -34,7 +34,8 @@ const CreateEditUserForm = () => {
     //
   };
 
-  console.log(form.formState.errors);
+  console.log("errors", form.formState.errors);
+  console.log("values", form.getValues());
 
   return (
     <div className="w-full max-w-[800px] m-auto mt-10">
@@ -59,6 +60,7 @@ const CreateEditUserForm = () => {
                   email: "",
                   password: "",
                   password_confirmation: "",
+                  gender: "",
                   experiences: [
                     {
                       position: "",

@@ -38,6 +38,12 @@ export enum Skill {
   Game = "Game",
 }
 
+export enum WorkingType {
+  FullTime = "full_time",
+  PartTime = "part_time",
+  Freelancer = "freelancer",
+}
+
 export type UserForm = {
   first_name: string;
   last_name: string;
@@ -47,8 +53,8 @@ export type UserForm = {
   gender: GenderEnum;
   url?: string;
   phone?: string;
-  // skills?: Array<`${Skill}`>;
-  // working_types?: "full_time" | "part_time" | "freelancer";
+  skills?: Array<Skill>;
+  working_types?: WorkingType; // "full_time" | "part_time" | "freelancer";
 
   experiences: Array<{
     position: string;
