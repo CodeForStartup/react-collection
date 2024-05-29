@@ -69,14 +69,15 @@ export const createUserResolver = yupResolver<UserForm>(
               is_working: yup.boolean(),
               to: yup
                 .date()
-                .required("End date is required")
-                .nullable()
-                .when(["is_working", "from"], ([is_working, from], schema) => {
+                .when("is_working", (is_working, schema) => {
                   return Boolean(is_working)
                     ? schema
                     : schema.required("End date is required");
                 })
-                .transform((curr, orig) => (orig === "" ? null : curr)),
+                .typeError("End date is required")
+                .transform((value) => {
+                  return Date.parse(value) ? value : "";
+                }),
             },
             [["to", "is_working"]] as const
           )

@@ -19,7 +19,7 @@ const CreateEditUserForm = () => {
         {
           position: "",
           company: "",
-          from: new Date(),
+          from: undefined,
           to: undefined,
           is_working: false,
         },
@@ -33,6 +33,8 @@ const CreateEditUserForm = () => {
   const onSubmit = () => {
     //
   };
+
+  console.log(form.formState.errors);
 
   return (
     <div className="w-full max-w-[800px] m-auto mt-10">
