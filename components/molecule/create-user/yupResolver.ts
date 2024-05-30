@@ -52,7 +52,7 @@ export const createUserResolver = yupResolver<UserForm>(
 
       working_types: yup
         .string()
-        .oneOf(Object.values(WorkingType))
+        .oneOf(Object.values(WorkingType), "Working type is required")
         .required("Working type is required"),
 
       phone: yup.string().required("Phone is required"),
