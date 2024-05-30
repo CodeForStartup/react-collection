@@ -180,6 +180,9 @@ const UserDetailInfo: React.FC = () => {
                   </FormItem>
                 </RadioGroup>
               </FormControl>
+              <FormDescription>
+                Validate: required, one of WorkingType value (enum validation)
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -190,10 +193,7 @@ const UserDetailInfo: React.FC = () => {
           render={() => (
             <FormItem>
               <div className="mb-4">
-                <FormLabel className="text-base">Sidebar</FormLabel>
-                <FormDescription>
-                  Select the items you want to display in the sidebar.
-                </FormDescription>
+                <FormLabel className="text-base">Skills</FormLabel>
               </div>
               {Skills.map((skill) => (
                 <FormField
@@ -227,9 +227,28 @@ const UserDetailInfo: React.FC = () => {
                   }}
                 />
               ))}
+              <FormDescription>
+                Validate: required, min-length: 1, includes [Skills]
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
+        />
+
+        <FormField
+          name="url"
+          render={({ field }) => {
+            return (
+              <FormItem className="w-full">
+                <FormLabel>Url</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your website" {...field} />
+                </FormControl>
+                <FormDescription>Validate: url</FormDescription>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
       </div>
     </div>

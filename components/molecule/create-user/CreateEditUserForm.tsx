@@ -63,6 +63,7 @@ const CreateEditUserForm = () => {
                   password_confirmation: "",
                   gender: "",
                   working_types: "",
+                  url: "",
                   experiences: [
                     {
                       position: "",
