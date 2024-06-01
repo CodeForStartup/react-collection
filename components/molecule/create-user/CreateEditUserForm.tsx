@@ -35,9 +35,6 @@ const CreateEditUserForm = () => {
     //
   };
 
-  console.log("errors", form.formState.errors);
-  console.log("values", form.getValues());
-
   return (
     <div className="w-full max-w-[800px] m-auto mt-10">
       <Form {...form}>
