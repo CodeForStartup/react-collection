@@ -45,13 +45,23 @@ const PaginationSelect = ({
 
   const handleInputChange = (newInputValue: string, actionMeta: any) => {
     setInput(newInputValue);
-    if (actionMeta.action === "input-change") {
+    if (
+      actionMeta.action === "input-change" ||
+      actionMeta.action === "menu-close"
+    ) {
       setPage(1);
       setOptions([]);
     }
   };
 
-  console.log(options);
+  const handleChange = (selectedOption: any, actionMeta: any) => {
+    if (actionMeta.action === "clear") {
+      setPage(1);
+      setInput("");
+      setOptions([]);
+      loadOptions();
+    }
+  };
 
   return (
     <Select
@@ -60,6 +70,7 @@ const PaginationSelect = ({
       inputValue={input}
       onInputChange={handleInputChange}
       isSearchable={true}
+      onChange={handleChange}
       onMenuScrollToBottom={() => setPage((prev) => prev + 1)}
     />
   );

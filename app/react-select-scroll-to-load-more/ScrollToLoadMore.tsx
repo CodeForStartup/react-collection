@@ -26,9 +26,6 @@ const ScrollToLoadMore = () => {
     <PaginationSelect
       className="min-w-[400px]"
       isClearable
-      onChange={(newValue, actionMeta) => {
-        console.log(newValue, actionMeta);
-      }}
       limitPerPage={10}
       fetchOptions={fetchGitHubRepositories}
       placeholder="Search GitHub Repositories"
