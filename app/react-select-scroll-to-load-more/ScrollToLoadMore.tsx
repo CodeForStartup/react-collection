@@ -2,9 +2,13 @@
 
 import PaginationSelect from "@/components/molecule/pagination-select";
 import axios from "axios";
+import { useState } from "react";
 
 const ScrollToLoadMore = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const fetchGitHubRepositories = async (input: string, page: number) => {
+    setIsLoading(true);
     const response = await axios.get(
       `https://api.github.com/search/repositories?q=${input}+stars:>10000&sort=stars&page=${page}&per_page=10`,
       {
@@ -19,13 +23,15 @@ const ScrollToLoadMore = () => {
       value: item.id,
     }));
 
+    setIsLoading(false);
     return { options, total: response.data.total_count };
   };
 
   return (
     <PaginationSelect
-      className="min-w-[400px]"
       isClearable
+      isLoading={isLoading}
+      className="min-w-[400px]"
       limitPerPage={10}
       fetchOptions={fetchGitHubRepositories}
       placeholder="Search GitHub Repositories"

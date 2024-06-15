@@ -17,6 +17,7 @@ type PaginationSelectProps = AsyncProps<any, any, any> & {
 
 const PaginationSelect = ({
   fetchOptions,
+  onChange,
   initialInput = "",
   initialPage = 1,
   limitPerPage = 10,
@@ -47,7 +48,7 @@ const PaginationSelect = ({
     setInput(newInputValue);
     if (
       actionMeta.action === "input-change" ||
-      actionMeta.action === "menu-close"
+      (actionMeta.action === "menu-close" && !!actionMeta.prevInputValue)
     ) {
       setPage(1);
       setOptions([]);
@@ -55,11 +56,14 @@ const PaginationSelect = ({
   };
 
   const handleChange = (selectedOption: any, actionMeta: any) => {
+    onChange?.(selectedOption, actionMeta);
     if (actionMeta.action === "clear") {
       setPage(1);
       setInput("");
       setOptions([]);
-      loadOptions();
+      if (page === 1) {
+        loadOptions();
+      }
     }
   };
 
