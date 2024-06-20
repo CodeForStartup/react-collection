@@ -4,6 +4,7 @@ import Select from "react-select";
 import type { AsyncProps } from "react-select/async";
 import type { OptionsOrGroups } from "react-select";
 import { useEffect, useState } from "react";
+import debounce from "lodash/debounce";
 
 type PaginationSelectProps = AsyncProps<any, any, any> & {
   fetchOptions: (
@@ -29,7 +30,7 @@ const PaginationSelect = ({
   const [total, setTotal] = useState(limitPerPage + 1);
 
   const loadOptions = async () => {
-    if (page * 10 > total) return;
+    if ((page - 1) * 10 > total) return;
 
     const { options: newOptions, total: newTotal } = await fetchOptions(
       input,
@@ -44,7 +45,7 @@ const PaginationSelect = ({
     loadOptions();
   }, [input, page]);
 
-  const handleInputChange = (newInputValue: string, actionMeta: any) => {
+  const _handleInputChange = (newInputValue: string, actionMeta: any) => {
     setInput(newInputValue);
     if (
       actionMeta.action === "input-change" ||
@@ -55,8 +56,11 @@ const PaginationSelect = ({
     }
   };
 
+  const handleInputChange = debounce(_handleInputChange, 500);
+
   const handleChange = (selectedOption: any, actionMeta: any) => {
     onChange?.(selectedOption, actionMeta);
+
     if (actionMeta.action === "clear") {
       setPage(1);
       setInput("");
@@ -71,7 +75,6 @@ const PaginationSelect = ({
     <Select
       {...props}
       options={options}
-      inputValue={input}
       onInputChange={handleInputChange}
       isSearchable={true}
       onChange={handleChange}
